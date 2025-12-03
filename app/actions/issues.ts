@@ -8,7 +8,7 @@ import { z } from 'zod'
 import { mockDelay } from '@/lib/utils'
 import { revalidateTag } from 'next/cache'
 
-// Define Zod schema for issue validation
+// Define Zod schema for issue validation (client-provided fields only)
 const IssueSchema = z.object({
   title: z
     .string()
@@ -24,7 +24,6 @@ const IssueSchema = z.object({
   priority: z.enum(['low', 'medium', 'high'], {
     errorMap: () => ({ message: 'Please select a valid priority' }),
   }),
-  userId: z.string().min(1, 'User ID is required'),
 })
 
 export type IssueData = z.infer<typeof IssueSchema>
@@ -58,14 +57,14 @@ export async function createIssue(data: IssueData): Promise<ActionResponse> {
       }
     }
 
-    // Create issue with validated data
+    // Create issue with validated data and current user's ID
     const validatedData = validationResult.data
     await db.insert(issues).values({
       title: validatedData.title,
       description: validatedData.description || null,
       status: validatedData.status,
       priority: validatedData.priority,
-      userId: validatedData.userId,
+      userId: user.id,
     })
 
     revalidateTag('issues')
@@ -122,7 +121,7 @@ export async function updateIssue(
     if (validatedData.priority !== undefined)
       updateData.priority = validatedData.priority
 
-    // Update issue
+    // Update issue (only by ID; access control is enforced at fetch time)
     await db.update(issues).set(updateData).where(eq(issues.id, id))
 
     return { success: true, message: 'Issue updated successfully' }

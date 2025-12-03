@@ -128,7 +128,7 @@ export default async function MarketingLayout({
           </div>
           <div className="mt-8 border-t pt-8 text-center">
             <p className="text-sm text-gray-600">
-              &copy; <Timestamp /> Mode. All rights reserved.
+              &copy; <Timestamp /> Issue Ticket Tracking. All rights reserved.
             </p>
           </div>
         </div>

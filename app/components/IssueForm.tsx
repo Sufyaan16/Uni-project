@@ -21,7 +21,6 @@ import {
 
 interface IssueFormProps {
   issue?: Issue
-  userId: string
   isEditing?: boolean
 }
 
@@ -33,7 +32,6 @@ const initialState: ActionResponse = {
 
 export default function IssueForm({
   issue,
-  userId,
   isEditing = false,
 }: IssueFormProps) {
   const router = useRouter()
@@ -53,7 +51,6 @@ export default function IssueForm({
         | 'in_progress'
         | 'done',
       priority: formData.get('priority') as 'low' | 'medium' | 'high',
-      userId,
     }
 
     try {

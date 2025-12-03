@@ -117,17 +117,17 @@ export async function createSession(userId: string) {
 }
 
 // Get current session from JWT
-export const getSession = cache(async () => {
+export async function getSession() {
   try {
-    const cookieStore = await cookies()
-    const token = cookieStore.get('auth_token')?.value
+    const cookieStore = cookies()
+    const token = (await cookieStore).get('auth_token')?.value
 
     if (!token) return null
+
     const payload = await verifyJWT(token)
 
     return payload ? { userId: payload.userId } : null
   } catch (error) {
-    // Handle the specific prerendering error
     if (
       error instanceof Error &&
       error.message.includes('During prerendering, `cookies()` rejects')
@@ -141,7 +141,7 @@ export const getSession = cache(async () => {
     console.error('Error getting session:', error)
     return null
   }
-})
+}
 
 // Delete session by clearing the JWT cookie
 export async function deleteSession() {

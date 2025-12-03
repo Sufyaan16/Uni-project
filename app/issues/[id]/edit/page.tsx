@@ -3,6 +3,7 @@ import IssueForm from '@/app/components/IssueForm'
 import { ArrowLeftIcon } from 'lucide-react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+
 export default async function EditIssuePage({
   params,
 }: {
@@ -29,7 +30,7 @@ export default async function EditIssuePage({
       <h1 className="text-2xl font-bold mb-6">Edit Issue</h1>
 
       <div className="bg-white dark:bg-dark-elevated border border-gray-200 dark:border-dark-border-default rounded-lg shadow-sm p-6">
-        <IssueForm userId={issue.userId} issue={issue} isEditing />
+        <IssueForm issue={issue} isEditing />
       </div>
     </div>
   )

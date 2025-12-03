@@ -9,7 +9,8 @@ const NewIssue = async () => {
     redirect('/signin')
   }
 
-  return <IssueForm userId={user.id} />
+  // The form no longer needs an explicit userId; it uses the current user on the server
+  return <IssueForm />
 }
 
 export default NewIssue

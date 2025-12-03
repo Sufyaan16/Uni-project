@@ -1,13 +1,12 @@
 import { db } from '@/db'
 import { getSession } from './auth'
-import { eq } from 'drizzle-orm'
-import { cache } from 'react'
+import { and, eq } from 'drizzle-orm'
+// import { cache } from 'react'
 import { issues, users } from '@/db/schema'
 import { mockDelay } from './utils'
-import { cacheTag } from 'next/dist/server/use-cache/cache-tag'
 
-// Current user
-export const getCurrentUser = cache(async () => {
+// ❌ DO NOT CACHE — it relies on cookies()
+export async function getCurrentUser() {
   const session = await getSession()
   if (!session) return null
 
@@ -22,10 +21,10 @@ export const getCurrentUser = cache(async () => {
     console.error('Error getting user by ID:', error)
     return null
   }
-})
+}
 
-// Get user by email
-export const getUserByEmail = async (email: string) => {
+// Get user by email (fine)
+export async function getUserByEmail(email: string) {
   try {
     const result = await db.select().from(users).where(eq(users.email, email))
     return result[0] || null
@@ -35,16 +34,22 @@ export const getUserByEmail = async (email: string) => {
   }
 }
 
+// ❌ DO NOT USE "use cache"
+// ❌ DO NOT USE cacheTag()
+// This must stay dynamic because it relies on cookies()
 export async function getIssues() {
-  'use cache'
-  cacheTag('issues')
   try {
+    const user = await getCurrentUser()
+    if (!user) return []
+
     const result = await db.query.issues.findMany({
+      where: (issue, { eq }) => eq(issue.userId, user.id),
       with: {
         user: true,
       },
-      orderBy: (issues, { desc }) => [desc(issues.createdAt)],
+      orderBy: (issue, { desc }) => [desc(issue.createdAt)],
     })
+
     return result
   } catch (error) {
     console.error('Error fetching issues:', error)
@@ -52,15 +57,20 @@ export async function getIssues() {
   }
 }
 
-export const getIssue = async (id: number) => {
+// Also must be dynamic
+export async function getIssue(id: number) {
   try {
     await mockDelay(1000)
+    const user = await getCurrentUser()
+    if (!user) return null
+
     const issue = await db.query.issues.findFirst({
-      where: eq(issues.id, id),
+      where: and(eq(issues.id, id), eq(issues.userId, user.id)),
       with: {
         user: true,
       },
     })
+
     return issue
   } catch (error) {
     console.error(error)
