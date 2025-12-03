@@ -50,15 +50,15 @@ export default function SignUpPage() {
   return (
     <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-gray-50 dark:bg-[#121212]">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h1 className="text-center text-3xl font-extrabold text-gray-900 dark:text-white">
-          Mode
+        <h1 className="text-center text-4xl font-extrabold text-purple-600 dark:text-white">
+          Ticket Tracking
         </h1>
-        <h2 className="mt-2 text-center text-2xl font-bold text-gray-900 dark:text-white">
-          Create a new account
-        </h2>
       </div>
 
       <div className=" bg-violet-100 p-6 mt-8 sm:mx-auto sm:w-full sm:max-w-md rounded-3xl">
+        <h2 className=" text-center text-2xl font-bold text-gray-900 dark:text-white">
+          Create a new account
+        </h2>
         <Form action={formAction} className="space-y-6">
           {state?.message && !state.success && (
             <FormError>{state.message}</FormError>

@@ -6,26 +6,28 @@ import NavLink from './NavLink'
 
 export default function Navigation() {
   return (
-    <aside className="fixed inset-y-0 left-0 w-16 md:w-64 bg-gray-50 dark:bg-[#1A1A1A] border-r border-gray-200 dark:border-dark-border-subtle flex flex-col py-4 px-2 md:px-4">
+    <aside className="fixed inset-y-0 left-0 w-16 md:w-64 bg-gray-100 dark:bg-[#1A1A1A] border-r border-gray-300 dark:border-dark-border-subtle flex flex-col py-4 px-2 md:px-4 rounded-r-2xl">
       <div className="flex items-center justify-center md:justify-start mb-8 px-2">
         <Link
           href="/"
           className="text-xl font-bold tracking-tight text-gray-900 dark:text-white"
         >
-          <span className="hidden md:inline">Mode</span>
-          <span className="md:hidden">M</span>
+          <span className="hidden md:inline text-purple-500 p-6">
+            Ticket Tracking
+          </span>
         </Link>
       </div>
+      <div className="h-px w-full bg-gray-400 dark:bg-dark-border-subtle mb-2" />
 
       <nav className="flex-1 flex flex-col space-y-1">
         <NavLink
           href="/dashboard"
-          icon={<HomeIcon size={20} />}
+          icon={<HomeIcon size={25} />}
           label="Dashboard"
         />
         <NavLink
           href="/issues/new"
-          icon={<PlusIcon size={20} />}
+          icon={<PlusIcon size={25} />}
           label="New Issue"
         />
       </nav>

@@ -19,6 +19,9 @@ import {
   type ActionResponse,
 } from '@/app/actions/issues'
 
+import { useEffect } from 'react'
+import Swal from 'sweetalert2'
+
 interface IssueFormProps {
   issue?: Issue
   isEditing?: boolean
@@ -77,6 +80,18 @@ export default function IssueForm({
     }
   }, initialState)
 
+  // ▶️ SweetAlert popup when submission succeeds
+  useEffect(() => {
+    if (state.success) {
+      Swal.fire({
+        icon: 'success',
+        title: isEditing ? 'Issue Updated!' : 'Issue Created!',
+        text: state.message || 'Operation completed successfully!',
+        confirmButtonColor: '#6366f1',
+      })
+    }
+  }, [state.success])
+
   const statusOptions = Object.values(ISSUE_STATUS).map(({ label, value }) => ({
     label,
     value,
@@ -91,15 +106,7 @@ export default function IssueForm({
 
   return (
     <Form action={formAction}>
-      {state?.message && (
-        <FormError
-          className={`mb-4 ${
-            state.success ? 'bg-green-100 text-green-800 border-green-300' : ''
-          }`}
-        >
-          {state.message}
-        </FormError>
-      )}
+      {/* {state?.message && <FormError>{state.message}</FormError>} */}
 
       <FormGroup>
         <FormLabel htmlFor="title">Title</FormLabel>

@@ -12,8 +12,8 @@ export default async function MarketingLayout({
       <header className="border-b border-gray-200 dark:border-dark-border-subtle bg-white dark:bg-dark-base">
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <div className="flex items-center gap-8">
-            <Link href="/" className="text-xl font-bold">
-              Mode
+            <Link href="/" className="text-xl font-bold text-purple-600">
+              Ticket Tracking
             </Link>
             <nav className="hidden md:flex gap-6">
               <Link
